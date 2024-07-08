@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Question Form</title>
+</head>
+<body>
+  <form id="csv-form">
+    <label for="csv-file">Upload CSV:</label>
+    <input type="file" id="csv-file" name="csv-file" accept=".csv" required>
+    <br>
+    <label for="question">Enter your question:</label>
+    <input type="text" id="question" name="question" required>
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('csv-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append('csv-file', document.getElementById('csv-file').files[0]);
+      formData.append('question', document.getElementById('question').value);
+
+      const response = await fetch('URL_DO_SEU_ENDPOINT_N8N', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      document.getElementById('response').innerText = result.answer;
+    });
+  </script>
+</body>
+</html>
